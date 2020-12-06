@@ -7,7 +7,7 @@ const auth = require('../modules/auth');
 //Create User -- Sign Up
 router.post('/', async (req, res) => {
 	const { error } = userValidator(req.body);
-	console.log(req.body);
+
 	// if (error) return res.status(400).json(error.message);
 	const { name, email, password, admin, adminPin } = req.body;
 	try {
@@ -15,17 +15,25 @@ router.post('/', async (req, res) => {
 		const checkuser = await User.findOne({ email: email });
 		if (checkuser)
 			return res.status(400).json({ msg: ' User already exist' });
-
+		if (admin && adminPin !== '2324') {
+			return res.status(400).json({
+				msg:
+					'Admin Pin provided is incorrect please contact your employeer',
+			});
+		}
 		const user = new User({
 			name,
 			email,
 			password,
 			admin,
 		});
-		if (admin) user.adminPin = adminPin;
 
-		//Generate Salt
-		//Hash The password
+		if (admin && adminPin === '2324') {
+			user.adminPin = adminPin;
+		}
+
+		// Generate Salt
+		// Hash The password
 		const salt = await bcrypt.genSalt(10);
 		user.password = await bcrypt.hash(password, salt);
 		console.log(user);
