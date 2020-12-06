@@ -1,0 +1,7 @@
+{
+    "ngo_jwtPrivateKey" :"JWT_SECRET",
+    "DB_Connection": "MONGO_DB_URI",
+    "DECODER" :" JWT_SECRET"
+    
+    
+}
