@@ -11,6 +11,6 @@ module.exports = async function auth(req, res, next) {
 		req.user = decoded;
 		next();
 	} catch (error) {
-		return res.json(401).json(error);
+		return res.status(401).json(error);
 	}
 };
